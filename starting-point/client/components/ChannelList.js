@@ -4,23 +4,33 @@ import store from '../store';
 import { connect } from 'react-redux';
 
 export function ChannelList (props) {
+  console.log("THIS IS IT", props)
   return (
     <ul>
-      <li>
-        <NavLink to={"URL_GOES_HERE"} activeClassName="active">
-          <span># {/* channel name goes here */}</span>
-          <span className="badge">{/* number of messages calculation goes here */} </span>
-        </NavLink>
-      </li>
+      {
+        props.channels.map(channel => {
+          return (
+            <li key={channel.id}>
+              <NavLink to={`/channels/${channel.id}`} activeClassName="active">
+                <span># {channel.name}</span>
+                <span className="badge">{props.messages.filter(message => message.channelId === channel.id).length}</span>
+              </NavLink>
+             </li>
+          )
+        })
+      }
       <li>
         <NavLink to="/new-channel">Create a channel...</NavLink>
       </li>
     </ul>
-  );
+  )
 }
 
 const mapStateToProps = function (state) {
-  return {};
+  return {
+    channels: state.channels,
+    messages: state.messages
+  };
 };
 
  const ChannelListContainer = connect(mapStateToProps)(ChannelList);
