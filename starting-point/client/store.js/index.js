@@ -18,8 +18,7 @@ const initialState = {
 // ACTION TYPES
 
 const UPDATE_NAME = 'UPDATE_NAME';
-const GET_MESSAGE = 'GET_MESSAGE';
-const GET_MESSAGES = 'GET_MESSAGES';
+
 const WRITE_MESSAGE = 'WRITE_MESSAGE';
 const GET_CHANNELS = 'GET_CHANNELS';
 const WRITE_CHANNEL= 'WRITE_CHANNEL';
@@ -32,15 +31,7 @@ export function updateName(name) {
   return action;
 }
 
-export function getMessage(message) {
-  const action = { type: GET_MESSAGE, message };
-  return action;
-}
 
-export function getMessages(messages) {
-  const action = { type: GET_MESSAGES, messages };
-  return action;
-}
 
 export function writeMessage(content) {
   const action = { type: WRITE_MESSAGE, content };
@@ -65,31 +56,9 @@ export function getNewChannel(channel) {
 
 // THUNK CREATORS
 
-export function fetchMessages() {
 
-  return function thunk(dispatch) {
-    return axios.get('/api/messages')
-      .then(res => res.data)
-      .then(messages => {
-        const action = getMessages(messages);
-        dispatch(action);
-      });
-  }
-}
 
-export function postMessage(message) {
 
-  return function thunk(dispatch) {
-    return axios.post('/api/messages', message)
-      .then(res => res.data)
-      .then(newMessage => {
-        const action = getMessage(newMessage);
-        dispatch(action);
-        socket.emit('new-message', newMessage);
-      });
-  }
-
-}
 
 export function fetchChannels () {
   return function (dispatch) {
@@ -99,7 +68,7 @@ export function fetchChannels () {
   }
 }
 
-export function postChannel (channel) {
+export function postChannel (channel, history) {
   return function thunk (dispatch) {
     return axios.post('/api/channels/', channel)
       .then(res => res.data)
@@ -107,6 +76,7 @@ export function postChannel (channel) {
         const action = getNewChannel(newChannel)
         dispatch(action)
         socket.emit('new-channel', newChannel);
+        history.push(`/channels/${newChannel.id}`)
       })
   }
 }

@@ -30,12 +30,13 @@ const mapDispatchToProps = function (dispatch, ownProps) {
 
     handleSubmit(evt){
       evt.preventDefault();
-      const name = evt.target.channelName.value;
-      dispatch(postChannel({ name: name }));
+      const name = evt.target.channelName.value
+      dispatch(postChannel({ name: name }, ownProps.history))
+      dispatch(writeChannel(''))
     }
   };
 }
-const mapStateToProps = function (state) {
+const mapStateToProps = function (state, ownProps) {
   return {
     newChannelEntry: state.newChannelEntry
   }
