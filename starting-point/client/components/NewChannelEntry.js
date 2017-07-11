@@ -22,7 +22,7 @@ export function NewChannelEntry (props) {
 }
 
 /** Write your `connect` component below! **/
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function (dispatch, ownProps) {
   return {
     handleChange(evt){
       dispatch(writeChannel(evt.target.value))
@@ -31,7 +31,7 @@ const mapDispatchToProps = function (dispatch) {
     handleSubmit(evt){
       evt.preventDefault();
       const name = evt.target.channelName.value;
-      dispatch(postChannel({ name }));
+      dispatch(postChannel({ name: name }));
     }
   };
 }
@@ -43,4 +43,6 @@ const mapStateToProps = function (state) {
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(NewChannelEntry);
 export default Container;
+
+
 

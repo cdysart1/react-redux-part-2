@@ -106,6 +106,7 @@ export function postChannel (channel) {
       .then(newChannel => {
         const action = getNewChannel(newChannel)
         dispatch(action)
+        socket.emit('new-channel', newChannel);
       })
   }
 }
@@ -163,10 +164,11 @@ function reducer(state = initialState, action) {
       };
     case GET_CHANNELS:
       return {...state, channels: action.channels };
-    
+
     case GET_NEW_CHANNEL:
-      return [...state.channels, action.channel];
-    
+      return {
+        ...state, channels:[...state.channels, action.channel] }
+
     case WRITE_CHANNEL:
       return {...state, newChannelEntry: action.channel };
 

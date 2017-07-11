@@ -3,12 +3,13 @@ import { NavLink } from 'react-router-dom';
 import store from '../store';
 import { connect } from 'react-redux';
 
-export function ChannelList (props) {
-  console.log("THIS IS IT", props)
+function ChannelList (props) {
+  console.log("THIS IS IT", props.channels);
+
   return (
     <ul>
       {
-        props.channels.map(channel => {
+        props.channels && props.channels.map(channel => {
           return (
             <li key={channel.id}>
               <NavLink to={`/channels/${channel.id}`} activeClassName="active">
